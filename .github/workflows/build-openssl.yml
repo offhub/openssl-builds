@@ -1,0 +1,77 @@
+name: Build OpenSSL (Windows x64, x86, and ARM64)
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+#	  fail-fast: false
+      matrix:
+        os: [windows-latest]
+        target: [VC-WIN64A, VC-WIN32, VC-WIN64-ARM]
+        openssl_version: ["3.3.0"]
+
+    steps:
+#    - name: Set up NASM
+#      uses: ilammy/setup-nasm@v1.5.1
+
+    - name: Enable Developer Command Prompt (x64)
+      if: matrix.target == 'VC-WIN64A' || matrix.target == 'VC-WIN64-ARM'
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+      with:
+        arch: 'x64'
+
+    - name: Enable Developer Command Prompt (x86)
+      if: matrix.target == 'VC-WIN32'
+      uses: ilammy/msvc-dev-cmd@v1.13.0
+      with:
+        arch: 'x86'
+
+    - name: Download OpenSSL Source ${{ matrix.openssl_version }}
+      run: |
+        curl -LO https://github.com/openssl/openssl/releases/download/openssl-${{ matrix.openssl_version }}/openssl-${{ matrix.openssl_version }}.tar.gz
+        tar -xzf openssl-${{ matrix.openssl_version }}.tar.gz
+
+    - name: Build OpenSSL ${{ matrix.openssl_version }}
+      run: |
+        cd openssl-${{ matrix.openssl_version }}
+        perl Configure shared no-asm ${{ matrix.target }}
+        nmake
+
+    - name: Compress Artifacts ${{ matrix.openssl_version }} (x64)
+      if: matrix.target == 'VC-WIN64A'
+      run: |
+       7z a openssl-${{ matrix.openssl_version }}-x64-artifacts.zip openssl-${{ matrix.openssl_version }}/apps/openssl.exe openssl-${{ matrix.openssl_version }}/apps/openssl.pdb openssl-${{ matrix.openssl_version }}/lib*.dll openssl-${{ matrix.openssl_version }}/lib*.pdb
+
+    - name: Compress Artifacts ${{ matrix.openssl_version }} (x86)
+      if: matrix.target == 'VC-WIN32'
+      run: |
+        7z a openssl-${{ matrix.openssl_version }}-x86-artifacts.zip openssl-${{ matrix.openssl_version }}/apps/openssl.exe openssl-${{ matrix.openssl_version }}/apps/openssl.pdb openssl-${{ matrix.openssl_version }}/lib*.dll openssl-${{ matrix.openssl_version }}/lib*.pdb
+
+    - name: Compress Artifacts ${{ matrix.openssl_version }} (arm64)
+      if: matrix.target == 'VC-WIN64-ARM'
+      run: |
+        7z a openssl-${{ matrix.openssl_version }}-arm64-artifacts.zip openssl-${{ matrix.openssl_version }}/apps/openssl.exe openssl-${{ matrix.openssl_version }}/apps/openssl.pdb openssl-${{ matrix.openssl_version }}/lib*.dll openssl-${{ matrix.openssl_version }}/lib*.pdb
+
+    - name: Upload Artifacts ${{ matrix.openssl_version }} (x64)
+      if: matrix.target == 'VC-WIN64A'
+      uses: actions/upload-artifact@v4
+      with:
+        name: openssl-${{ matrix.openssl_version }}-x64-artifacts
+        path: openssl-${{ matrix.openssl_version }}-x64-artifacts.zip
+
+    - name: Upload Artifacts ${{ matrix.openssl_version }} (x86)
+      if: matrix.target == 'VC-WIN32'
+      uses: actions/upload-artifact@v4
+      with:
+        name: openssl-${{ matrix.openssl_version }}-x86-artifacts
+        path: openssl-${{ matrix.openssl_version }}-x86-artifacts.zip
+
+    - name: Upload Artifacts ${{ matrix.openssl_version }} (arm64)
+      if: matrix.target == 'VC-WIN64-ARM'
+      uses: actions/upload-artifact@v4
+      with:
+        name: openssl-${{ matrix.openssl_version }}-arm64-artifacts
+        path: openssl-${{ matrix.openssl_version }}-arm64-artifacts.zip
