@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [windows-latest]
         target: [VC-WIN64A, VC-WIN32, VC-WIN64-ARM]
-        openssl_version: [3.3.0, 1.1.1w, master]
+        openssl_version: [1.1.1w, master]
         exclude:
           - openssl_version: master
 
@@ -37,7 +37,7 @@ jobs:
     - name: Download OpenSSL Source (Release 1)
       if: startsWith(matrix.openssl_version, 1 )
       run: |
-        curl -LO "https://github.com/openssl/openssl/releases/download/OpenSSL_${{ env.openssl_version_underscore }}/openssl-${{ matrix.openssl_version }}.tar.gz"
+        curl -LO "https://github.com/openssl/openssl/releases/download/OpenSSL_"${{ matrix.openssl_version }}".Replace('.','_')/openssl-${{ matrix.openssl_version }}.tar.gz"
         tar -xzf openssl-${{ matrix.openssl_version }}.tar.gz
 
     - name: Download OpenSSL Source (Release 3)
