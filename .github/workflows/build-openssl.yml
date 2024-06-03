@@ -3,6 +3,9 @@ name: Build OpenSSL (Windows x64, x86, and ARM64)
 on:
   workflow_dispatch:  # Manual trigger
 
+env:
+  openssl_version_underscore: 1_1_1w
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -14,9 +17,6 @@ jobs:
         openssl_version: [1.1.1w, master]
         exclude:
           - openssl_version: master
-
-env:
-  openssl_version_underscore: 1_1_1w
 
     steps:
 #    - name: Set up NASM
