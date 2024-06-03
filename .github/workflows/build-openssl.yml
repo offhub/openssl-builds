@@ -37,7 +37,7 @@ jobs:
     - name: Download OpenSSL Source (Release 1)
       if: startsWith( ${{ matrix.openssl_version }}, 1 )
       run: |
-        curl -LO "https://github.com/openssl/openssl/releases/download/openssl_${{ env.openssl_version_underscore }}/openssl-${{ matrix.openssl_version }}.tar.gz"
+        curl -LO "https://github.com/openssl/openssl/releases/download/OpenSSL_${{ env.openssl_version_underscore }}/openssl-${{ matrix.openssl_version }}.tar.gz"
         tar -xzf openssl-${{ matrix.openssl_version }}.tar.gz
 
     - name: Download OpenSSL Source (Release 3)
