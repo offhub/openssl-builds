@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [windows-latest]
         target: [VC-WIN64A, VC-WIN32, VC-WIN64-ARM]
-        openssl_version: [3.3.1, 1.1.1w, master]
+        openssl_version: [3.3.2, 1.1.1w, master]
         exclude:
           - openssl_version: master
 
@@ -75,21 +75,21 @@ jobs:
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (x64)
       if: matrix.target == 'VC-WIN64A'
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v4.4.0
       with:
         name: openssl-${{ matrix.openssl_version }}-x64-artifacts
         path: openssl-${{ matrix.openssl_version }}-x64-artifacts.zip
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (x86)
       if: matrix.target == 'VC-WIN32'
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v4.4.0
       with:
         name: openssl-${{ matrix.openssl_version }}-x86-artifacts
         path: openssl-${{ matrix.openssl_version }}-x86-artifacts.zip
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (arm64)
       if: matrix.target == 'VC-WIN64-ARM'
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v4.4.0
       with:
         name: openssl-${{ matrix.openssl_version }}-arm64-artifacts
         path: openssl-${{ matrix.openssl_version }}-arm64-artifacts.zip
