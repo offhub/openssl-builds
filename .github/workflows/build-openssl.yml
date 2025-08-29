@@ -12,7 +12,7 @@ jobs:
     strategy:
 #	  fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [windows-2022]
         target: [VC-WIN64A, VC-WIN32, VC-WIN64-ARM]
         openssl_version: [3.5.2, 3.4.2, 3.3.4, 1.1.1w, master]
         exclude:
