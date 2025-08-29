@@ -75,21 +75,21 @@ jobs:
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (x64)
       if: matrix.target == 'VC-WIN64A'
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: openssl-${{ matrix.openssl_version }}-x64-artifacts
         path: openssl-${{ matrix.openssl_version }}-x64-artifacts.zip
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (x86)
       if: matrix.target == 'VC-WIN32'
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: openssl-${{ matrix.openssl_version }}-x86-artifacts
         path: openssl-${{ matrix.openssl_version }}-x86-artifacts.zip
 
     - name: Upload Artifacts ${{ matrix.openssl_version }} (arm64)
       if: matrix.target == 'VC-WIN64-ARM'
-      uses: actions/upload-artifact@v4.4.3
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: openssl-${{ matrix.openssl_version }}-arm64-artifacts
         path: openssl-${{ matrix.openssl_version }}-arm64-artifacts.zip
