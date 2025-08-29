@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [windows-latest]
         target: [VC-WIN64A, VC-WIN32, VC-WIN64-ARM]
-        openssl_version: [3.5.0, 3.4.1, 3.3.3, 1.1.1w, master]
+        openssl_version: [3.5.2, 3.4.2, 3.3.4, 1.1.1w, master]
         exclude:
           - openssl_version: master
 
