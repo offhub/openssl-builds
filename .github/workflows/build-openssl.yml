@@ -46,6 +46,12 @@ jobs:
         curl -LO "https://github.com/openssl/openssl/releases/download/openssl-${{ matrix.openssl_version }}/openssl-${{ matrix.openssl_version }}.tar.gz"
         tar -xzf openssl-${{ matrix.openssl_version }}.tar.gz
 
+    - name: Download OpenSSL Source (Release 4)
+      if: startsWith(matrix.openssl_version, 4)
+      run: |
+        curl -LO "https://github.com/openssl/openssl/releases/download/openssl-${{ matrix.openssl_version }}/openssl-${{ matrix.openssl_version }}.tar.gz"
+        tar -xzf openssl-${{ matrix.openssl_version }}.tar.gz
+
     - name: Download OpenSSL Source (Dev)
       if: matrix.openssl_version == 'master'
       run: |
